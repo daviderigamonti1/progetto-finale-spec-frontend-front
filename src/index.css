@@ -1,0 +1,16 @@
+ul {
+    list-style: none;
+}
+
+li {
+    margin: 10px;
+}
+
+.card {
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

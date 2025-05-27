@@ -8,7 +8,7 @@ export function GlobalProvider({ children }) {
     const deviceData = useDevices();
 
     return (
-        <GlobalContext.Provider value={{ ...deviceData }}>
+        <GlobalContext.Provider value={{ devices: deviceData }}>
             {children}
         </GlobalContext.Provider>
     )
