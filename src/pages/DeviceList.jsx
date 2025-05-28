@@ -16,14 +16,16 @@ export default function DeviceList() {
 
     const [searchTitle, setSearchTitle] = useState("");
     const [categoryFilter, setCategoryFilter] = useState("");
+    const [sortOrder, setSortOrder] = useState("asc");
 
-    const filteredDevice = useMemo(() => {
-        return [...devices].filter(device => {
+    const filteredAndSorteredDevice = useMemo(() => {
+        const filtered = [...devices].filter(device => {
             const matchesTitle = !searchTitle || device.title.toLowerCase().includes(searchTitle.toLowerCase());
             const matchesCategory = !categoryFilter || device.category === categoryFilter;
             return matchesTitle && matchesCategory;
         });
-    }, [devices, searchTitle, categoryFilter]);
+        return filtered.sort((a, b) => sortOrder === "asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title))
+    }, [devices, searchTitle, categoryFilter, sortOrder]);
 
     const debouncedSetSearchTitle = useCallback(
         debounce(setSearchTitle, 500)
@@ -36,8 +38,12 @@ export default function DeviceList() {
         return acc;
     }, []);
 
+    function toggleOrder() {
+        setSortOrder(prev => prev === "asc" ? "desc" : "asc");
+    }
+
     return (
-        <>
+        <div className="device-list-container">
             {/* SearchBar */}
             <input
                 type="text"
@@ -53,15 +59,20 @@ export default function DeviceList() {
                 ))}
             </select>
 
+            {/* Ordina dispositivi (A-Z / Z-A) */}
+            <button onClick={toggleOrder}>
+                {sortOrder === "asc" ? "A-Z" : "Z-A"}
+            </button>
+
             {/* Lista Dispositivi */}
             <ul>
-                {filteredDevice.map((device) => (
+                {filteredAndSorteredDevice.map((device) => (
                     <li key={device.id} className="card">
                         <h3>{device.title}</h3>
                         <span>{device.category}</span>
                     </li>
                 ))}
             </ul>
-        </>
+        </div>
     )
 }
