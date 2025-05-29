@@ -1,5 +1,6 @@
 import { useState, useContext, useMemo, useCallback } from "react";
 import { GlobalContext } from "../context/GlobalContext";
+import { Link } from "react-router-dom";
 
 function debounce(callback, delay) {
     let timer;
@@ -68,11 +69,13 @@ export default function DeviceList() {
             <ul>
                 {filteredAndSorteredDevice.map((device) => (
                     <li key={device.id} className="card">
-                        <h3>{device.title}</h3>
-                        <span>{device.category}</span>
+                        <div>
+                            <Link to={`/device/${device.id}`}><h3>{device.title}</h3></Link>
+                            <span>{device.category}</span>
+                        </div>
                     </li>
                 ))}
             </ul>
-        </div>
+        </div >
     )
 }
