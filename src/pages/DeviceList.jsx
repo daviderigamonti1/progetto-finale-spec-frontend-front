@@ -2,6 +2,8 @@ import { useState, useContext, useMemo, useCallback } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import { Link } from "react-router-dom";
 
+import Device from "../components/Device";
+
 function debounce(callback, delay) {
     let timer;
     return (value) => {
@@ -18,6 +20,7 @@ export default function DeviceList() {
     const [searchTitle, setSearchTitle] = useState("");
     const [categoryFilter, setCategoryFilter] = useState("");
     const [sortOrder, setSortOrder] = useState("asc");
+    const [selectedDevicesIds, setSelectedDevicesIds] = useState([]);
 
     const filteredAndSorteredDevice = useMemo(() => {
         const filtered = [...devices].filter(device => {
@@ -32,15 +35,29 @@ export default function DeviceList() {
         debounce(setSearchTitle, 500)
         , []);
 
-    const uniqueCategories = devices.reduce((acc, device) => {
-        if (device.category && !acc.includes(device.category)) {
-            acc.push(device.category);
-        }
-        return acc;
-    }, []);
+    const uniqueCategories = useMemo(() => {
+        return devices.reduce((acc, device) => {
+            if (device.category && !acc.includes(device.category)) {
+                acc.push(device.category);
+            }
+            return acc;
+        }, []);
+    }, [devices]);
 
     function toggleOrder() {
         setSortOrder(prev => prev === "asc" ? "desc" : "asc");
+    }
+
+    function toggleSelection(deviceId) {
+        setSelectedDevicesIds(prev => {
+            if (selectedDevicesIds.includes(deviceId)) {
+                return prev.filter(id => id !== deviceId);
+            } else if (prev.length < 2) {
+                return [...prev, deviceId];
+            } else {
+                return prev;
+            }
+        });
     }
 
     return (
@@ -66,14 +83,17 @@ export default function DeviceList() {
             </button>
 
             {/* Lista Dispositivi */}
+            {selectedDevicesIds.length === 2 && (
+                <Link to={`/devices/compare/${selectedDevicesIds[0]}/${selectedDevicesIds[1]}`}>Confronta</Link>
+            )}
             <ul>
                 {filteredAndSorteredDevice.map((device) => (
                     <li key={device.id} className="card">
-                        <div>
-                            <Link to={`/device/${device.id}`}><h3>{device.title}</h3></Link>
-                            <span>{device.category}</span>
-                        </div>
-                    </li>
+                        <Device
+                            device={device}
+                            isSelected={selectedDevicesIds.includes(device.id)}
+                            onToggle={toggleSelection} />
+                    </li >
                 ))}
             </ul>
         </div >
