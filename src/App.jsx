@@ -10,8 +10,8 @@ function App() {
 
   return (
     <GlobalProvider>
-      <Header />
       <BrowserRouter>
+        <Header />
         <Routes>
           <Route path="/" element={<DeviceList />} />
           <Route path="/devices/:id" element={<DeviceDetails />} />

@@ -15,7 +15,7 @@ function debounce(callback, delay) {
 }
 
 export default function DeviceList() {
-    const { devices } = useContext(GlobalContext);
+    const { devices, toggleFavorites } = useContext(GlobalContext);
 
     const [searchTitle, setSearchTitle] = useState("");
     const [categoryFilter, setCategoryFilter] = useState("");
@@ -61,41 +61,46 @@ export default function DeviceList() {
     }
 
     return (
-        <div className="device-list-container">
-            {/* SearchBar */}
-            <input
-                type="text"
-                placeholder="Cerca un dispositivo..."
-                onChange={e => debouncedSetSearchTitle(e.target.value)}
-            />
+        <>
+            <div className="device-list-container">
+                {/* SearchBar */}
+                <input
+                    type="text"
+                    placeholder="Cerca un dispositivo..."
+                    onChange={e => debouncedSetSearchTitle(e.target.value)}
+                />
 
-            {/* Filtro Categoria */}
-            <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)}>
-                <option value="">Scegli una categoria</option>
-                {uniqueCategories.map(c => (
-                    <option key={c} value={c}>{c}</option>
-                ))}
-            </select>
+                {/* Filtro Categoria */}
+                <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)}>
+                    <option value="">Scegli una categoria</option>
+                    {uniqueCategories.map(c => (
+                        <option key={c} value={c}>{c}</option>
+                    ))}
+                </select>
 
-            {/* Ordina dispositivi (A-Z / Z-A) */}
-            <button onClick={toggleOrder}>
-                {sortOrder === "asc" ? "A-Z" : "Z-A"}
-            </button>
+                {/* Ordina dispositivi (A-Z / Z-A) */}
+                <button onClick={toggleOrder}>
+                    {sortOrder === "asc" ? "A-Z" : "Z-A"}
+                </button>
 
-            {/* Lista Dispositivi */}
-            {selectedDevicesIds.length === 2 && (
-                <Link to={`/devices/compare/${selectedDevicesIds[0]}/${selectedDevicesIds[1]}`}>Confronta</Link>
-            )}
-            <ul>
-                {filteredAndSorteredDevice.map((device) => (
-                    <li key={device.id} className="card">
-                        <Device
-                            device={device}
-                            isSelected={selectedDevicesIds.includes(device.id)}
-                            onToggle={toggleSelection} />
-                    </li >
-                ))}
-            </ul>
-        </div >
+                {/* Lista Dispositivi */}
+                {selectedDevicesIds.length === 2 && (
+                    <Link to={`/devices/compare/${selectedDevicesIds[0]}/${selectedDevicesIds[1]}`}>Confronta</Link>
+                )}
+                <ul>
+                    {filteredAndSorteredDevice.map((device) => (
+                        <li key={device.id} className="card">
+                            <Device
+                                device={device}
+                                isSelected={selectedDevicesIds.includes(device.id)}
+                                onToggle={toggleSelection}
+                            />
+                        </li >
+                    ))}
+                </ul>
+            </div >
+
+
+        </>
     )
 }
