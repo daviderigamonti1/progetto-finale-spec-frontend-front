@@ -5,7 +5,7 @@ import useDevices from "../hooks/useDevices";
 export const GlobalContext = createContext();
 
 export function GlobalProvider({ children }) {
-    const { devices, device1, device2 } = useDevices();
+    const { devices } = useDevices();
     const [favorites, setFavorites] = useState([]);
 
     const isFavorite = (device) => favorites.some(fav => fav.id === device.id);
@@ -18,7 +18,7 @@ export function GlobalProvider({ children }) {
     }
 
     return (
-        <GlobalContext.Provider value={{ devices, device1, device2, favorites, toggleFavorites, isFavorite }}>
+        <GlobalContext.Provider value={{ devices, favorites, toggleFavorites, isFavorite }}>
             {children}
         </GlobalContext.Provider>
     )

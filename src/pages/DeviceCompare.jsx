@@ -1,12 +1,34 @@
 import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-import useDevices from "../hooks/useDevices";
+const { VITE_API_URL } = import.meta.env;
 
 export default function DeviceCompare() {
-    const { id1, id2 } = useParams();
-    const { device1, device2 } = useDevices(id1, id2);
+    const { ids } = useParams();
+    const idsArray = ids?.split(",") || [];
 
-    if (!device1 || !device2) {
+    const [devicesCompared, setDevicesCompared] = useState(null);
+
+    useEffect(() => {
+        if (idsArray.length < 2) {
+            setDevicesCompared(null);
+            return;
+        }
+
+        const fetchDetails = async () => {
+            try {
+                const promises = idsArray.map(id => fetch(`${VITE_API_URL}/devices/${id}`));
+                const responses = await Promise.all(promises);
+                const data = await Promise.all(responses.map(res => res.json()));
+                setDevicesCompared(data.map(d => d.device));
+            } catch (err) {
+                console.error("Errore nel recupero dei dettagli dei dispositivi:", err);
+            }
+        };
+        fetchDetails();
+    }, [ids]);
+
+    if (!devicesCompared) {
         return <p>Caricamento dei dispositivi in corso...</p>;
     }
 
@@ -22,24 +44,15 @@ export default function DeviceCompare() {
                 </tr>
             </thead>
             <tbody>
-
-                {/* Dispositivo 1 */}
-                <tr>
-                    <td>{device1.title}</td>
-                    <td>{device1.category}</td>
-                    <td>{device1.brand}</td>
-                    <td>{device1.releaseYear}</td>
-                    <td>{device1.price}</td>
-                </tr>
-
-                {/* Dispositivo 2 */}
-                <tr>
-                    <td>{device2.title}</td>
-                    <td>{device2.category}</td>
-                    <td>{device2.brand}</td>
-                    <td>{device2.releaseYear}</td>
-                    <td>{device2.price}</td>
-                </tr>
+                {devicesCompared.map(device => (
+                    <tr key={device.id}>
+                        <td>{device.title}</td>
+                        <td>{device.category}</td>
+                        <td>{device.brand}</td>
+                        <td>{device.releaseYear}</td>
+                        <td>{device.price}</td>
+                    </tr>
+                ))}
             </tbody>
         </table>
     )

@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<DeviceList />} />
           <Route path="/devices/:id" element={<DeviceDetails />} />
-          <Route path="/devices/compare/:id1/:id2" element={<DeviceCompare />} />
+          <Route path="/devices/compare/:ids" element={<DeviceCompare />} />
         </Routes>
       </BrowserRouter>
     </GlobalProvider>

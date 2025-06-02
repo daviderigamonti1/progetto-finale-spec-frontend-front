@@ -15,7 +15,7 @@ function debounce(callback, delay) {
 }
 
 export default function DeviceList() {
-    const { devices, toggleFavorites } = useContext(GlobalContext);
+    const { devices } = useContext(GlobalContext);
 
     const [searchTitle, setSearchTitle] = useState("");
     const [categoryFilter, setCategoryFilter] = useState("");
@@ -50,12 +50,10 @@ export default function DeviceList() {
 
     function toggleSelection(deviceId) {
         setSelectedDevicesIds(prev => {
-            if (selectedDevicesIds.includes(deviceId)) {
+            if (prev.includes(deviceId)) {
                 return prev.filter(id => id !== deviceId);
-            } else if (prev.length < 2) {
-                return [...prev, deviceId];
             } else {
-                return prev;
+                return [...prev, deviceId];
             }
         });
     }
@@ -63,6 +61,7 @@ export default function DeviceList() {
     return (
         <>
             <div className="device-list-container">
+
                 {/* SearchBar */}
                 <input
                     type="text"
@@ -84,8 +83,10 @@ export default function DeviceList() {
                 </button>
 
                 {/* Lista Dispositivi */}
-                {selectedDevicesIds.length === 2 && (
-                    <Link to={`/devices/compare/${selectedDevicesIds[0]}/${selectedDevicesIds[1]}`}>Confronta</Link>
+                {selectedDevicesIds.length >= 2 && (
+                    <Link to={`/devices/compare/${selectedDevicesIds.join(",")}`}>
+                        Confronta
+                    </Link>
                 )}
                 <ul>
                     {filteredAndSorteredDevice.map((device) => (
