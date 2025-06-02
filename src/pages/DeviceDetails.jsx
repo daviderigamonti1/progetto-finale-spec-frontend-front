@@ -10,7 +10,7 @@ const { VITE_API_URL } = import.meta.env;
 export default function DeviceDetail() {
     const { id } = useParams();
     const [deviceDetails, setDeviceDetails] = useState(null);
-    const { favorites, toggleFavorites, isFavorite } = useContext(GlobalContext);
+    const { toggleFavorites, isFavorite } = useContext(GlobalContext);
 
     useEffect(() => {
         fetch(`${VITE_API_URL}/devices/${id}`)
@@ -19,8 +19,8 @@ export default function DeviceDetail() {
             .catch(err => console.error(err))
     }, [id]);
 
-
     if (!deviceDetails) return <p>Dispositivo non trovato</p>;
+
     return (
         <>
             <div className="device-list-container">

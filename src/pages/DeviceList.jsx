@@ -88,20 +88,22 @@ export default function DeviceList() {
                         Confronta
                     </Link>
                 )}
-                <ul>
-                    {filteredAndSorteredDevice.map((device) => (
-                        <li key={device.id} className="card">
-                            <Device
-                                device={device}
-                                isSelected={selectedDevicesIds.includes(device.id)}
-                                onToggle={toggleSelection}
-                            />
-                        </li >
-                    ))}
-                </ul>
+                {filteredAndSorteredDevice.length > 0 ? (
+                    <ul>
+                        {filteredAndSorteredDevice.map((device) => (
+                            <li key={device.id} className="card">
+                                <Device
+                                    device={device}
+                                    isSelected={selectedDevicesIds.includes(device.id)}
+                                    onToggle={toggleSelection}
+                                />
+                            </li >
+                        ))}
+                    </ul>
+                ) : (
+                    <p>Nessun dispositivo trovato.</p>
+                )}
             </div >
-
-
         </>
     )
 }

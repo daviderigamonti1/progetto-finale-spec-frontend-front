@@ -15,15 +15,19 @@ export default function Header() {
                 {showFavorites ? "Nascondi preferiti" : "Mostra preferiti"}
             </button>
             {showFavorites && (
-                <ul>
-                    {favorites.map((favorite) => (
-                        <li key={favorite.id}>
-                            <Link to={`/devices/${favorite.id}`}>
-                                {favorite.title}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+                favorites.length > 0 ? (
+                    <ul>
+                        {favorites.map((favorite) => (
+                            <li key={favorite.id}>
+                                <Link to={`/devices/${favorite.id}`}>
+                                    {favorite.title}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>Nessun dispositivo nei preferiti.</p>
+                )
             )}
         </>
     )

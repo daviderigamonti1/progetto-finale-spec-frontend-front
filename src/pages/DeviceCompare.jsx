@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const { VITE_API_URL } = import.meta.env;
@@ -28,32 +28,35 @@ export default function DeviceCompare() {
         fetchDetails();
     }, [ids]);
 
-    if (!devicesCompared) {
-        return <p>Caricamento dei dispositivi in corso...</p>;
+    if (!devicesCompared || devicesCompared.length < 2) {
+        return <p>Seleziona almeno due dispositivi per poter effettuare una comparazione.</p>;
     }
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>Titolo</th>
-                    <th>Categoria</th>
-                    <th>Brand</th>
-                    <th>Anno di uscita</th>
-                    <th>Prezzo</th>
-                </tr>
-            </thead>
-            <tbody>
-                {devicesCompared.map(device => (
-                    <tr key={device.id}>
-                        <td>{device.title}</td>
-                        <td>{device.category}</td>
-                        <td>{device.brand}</td>
-                        <td>{device.releaseYear}</td>
-                        <td>{device.price}</td>
+        <>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Titolo</th>
+                        <th>Categoria</th>
+                        <th>Brand</th>
+                        <th>Anno di uscita</th>
+                        <th>Prezzo</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {devicesCompared.map(device => (
+                        <tr key={device.id}>
+                            <td>{device.title}</td>
+                            <td>{device.category}</td>
+                            <td>{device.brand}</td>
+                            <td>{device.releaseYear}</td>
+                            <td>{device.price}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <Link to="/" className="back-link">← Torna indietro</Link>
+        </>
     )
 }
