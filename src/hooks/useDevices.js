@@ -17,5 +17,26 @@ export default function useDevices() {
         fetchDevices();
     }, []);
 
-    return { devices };
+    const addDevice = async newDevice => {
+        const response = await fetch(`${VITE_API_URL}/devices`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newDevice)
+        });
+        const { success, message, device } = await response.json();
+        if (!success) throw new Error(message);
+
+        setDevices(prev => [...prev, device])
+    }
+
+    const removeDevice = async deviceId => {
+        const response = await fetch(`${VITE_API_URL}/devices/${deviceId}`, {
+            method: 'DELETE'
+        });
+        const { success, message } = await response.json();
+        if (!success) throw new Error(message);
+        setDevices(prev => prev.filter(d => d.id !== deviceId));
+    }
+
+    return { devices, addDevice, removeDevice };
 }

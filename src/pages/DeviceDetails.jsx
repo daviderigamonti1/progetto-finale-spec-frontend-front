@@ -1,8 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../context/GlobalContext';
-
 import { FaStar, FaRegStar } from "react-icons/fa";
 
 const { VITE_API_URL } = import.meta.env;
@@ -10,7 +9,10 @@ const { VITE_API_URL } = import.meta.env;
 export default function DeviceDetail() {
     const { id } = useParams();
     const [deviceDetails, setDeviceDetails] = useState(null);
-    const { toggleFavorites, isFavorite } = useContext(GlobalContext);
+
+    const { toggleFavorites, isFavorite, removeDevice } = useContext(GlobalContext);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`${VITE_API_URL}/devices/${id}`)
@@ -19,6 +21,16 @@ export default function DeviceDetail() {
             .catch(err => console.error(err))
     }, [id]);
 
+    const handleDelete = async () => {
+        try {
+            await removeDevice(deviceDetails.id);
+            alert("Dispositivo eliminato con succeso.");
+            navigate("/");
+        } catch (err) {
+            console.error(err);
+            alert(err.message);
+        }
+    }
     if (!deviceDetails) return <p>Dispositivo non trovato</p>;
 
     return (
@@ -37,6 +49,9 @@ export default function DeviceDetail() {
                     </button>
                 </div>
                 <Link to="/" className="back-link">← Torna indietro</Link>
+                <button onClick={handleDelete}>
+                    Elimina Dispositivo
+                </button>
             </div>
         </>
     );

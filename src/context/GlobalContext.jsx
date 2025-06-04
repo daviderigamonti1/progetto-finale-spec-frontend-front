@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useMemo } from "react";
 
 import useDevices from "../hooks/useDevices";
 
@@ -6,8 +6,17 @@ export const GlobalContext = createContext();
 const saved = localStorage.getItem("favorites");
 
 export function GlobalProvider({ children }) {
-    const { devices } = useDevices();
+    const { devices, addDevice, removeDevice } = useDevices();
     const [favorites, setFavorites] = useState(saved ? JSON.parse(localStorage.getItem("favorites")) : []);
+
+    const uniqueCategories = useMemo(() => {
+        return devices.reduce((acc, device) => {
+            if (device.category && !acc.includes(device.category)) {
+                acc.push(device.category);
+            }
+            return acc;
+        }, []);
+    }, [devices]);
 
     const isFavorite = (device) => favorites.some(fav => fav.id === device.id);
 
@@ -25,7 +34,7 @@ export function GlobalProvider({ children }) {
     }
 
     return (
-        <GlobalContext.Provider value={{ devices, favorites, toggleFavorites, isFavorite }}>
+        <GlobalContext.Provider value={{ devices, addDevice, removeDevice, uniqueCategories, favorites, toggleFavorites, isFavorite }}>
             {children}
         </GlobalContext.Provider>
     )

@@ -15,7 +15,7 @@ function debounce(callback, delay) {
 }
 
 export default function DeviceList() {
-    const { devices } = useContext(GlobalContext);
+    const { devices, uniqueCategories } = useContext(GlobalContext);
 
     const [searchTitle, setSearchTitle] = useState("");
     const [categoryFilter, setCategoryFilter] = useState("");
@@ -34,15 +34,6 @@ export default function DeviceList() {
     const debouncedSetSearchTitle = useCallback(
         debounce(setSearchTitle, 500)
         , []);
-
-    const uniqueCategories = useMemo(() => {
-        return devices.reduce((acc, device) => {
-            if (device.category && !acc.includes(device.category)) {
-                acc.push(device.category);
-            }
-            return acc;
-        }, []);
-    }, [devices]);
 
     function toggleOrder() {
         setSortOrder(prev => prev === "asc" ? "desc" : "asc");

@@ -4,7 +4,7 @@ import { GlobalContext } from "../context/GlobalContext";
 
 import { FaStar, FaRegStar } from "react-icons/fa";
 
-export default React.memo(function Device({ device, isSelected, onToggle, onToggleFavorite }) {
+export default React.memo(function Device({ device, isSelected, onToggle }) {
     const { toggleFavorites, isFavorite } = useContext(GlobalContext);
 
     return (
@@ -17,11 +17,15 @@ export default React.memo(function Device({ device, isSelected, onToggle, onTogg
                 </Link>
                 <span>{device.category}</span>
             </div>
+
+            {/* Checkbox per comparazione */}
             <input
                 type="checkbox"
                 checked={isSelected}
                 onChange={() => onToggle(device.id)}
             />
+
+            {/* Bottone preferiti */}
             <button onClick={() => toggleFavorites(device)}>
                 {isFavorite(device) ? <FaStar /> : <FaRegStar />}
             </button>

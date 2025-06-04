@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 export default function Header() {
     const { favorites } = useContext(GlobalContext);
@@ -8,7 +8,8 @@ export default function Header() {
 
     return (
         <>
-            <h1>Header</h1>
+            <NavLink to={"/"}>Lista Dispositivi</NavLink>
+            <NavLink to={"/add"}>Aggiungi Dispositivo</NavLink>
 
             {/* Dispositivi preferiti */}
             <button onClick={() => setShowFavorites(prev => !prev)}>
