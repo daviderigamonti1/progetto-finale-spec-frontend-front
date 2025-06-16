@@ -9,26 +9,30 @@ export default React.memo(function Device({ device, isSelected, onToggle }) {
 
     return (
         <>
-            <div>
-                <Link to={`/devices/${device.id}`}>
-                    <h3>
-                        {device.title}
-                    </h3>
+            <div className="device-header">
+                <Link to={`/devices/${device.id}`} className="device-title">
+                    <h3>{device.title}</h3>
                 </Link>
-                <span>{device.category}</span>
+                <span className="device-category">{device.category}</span>
             </div>
+            <div className="device-controls">
+                {/* Checkbox per comparazione */}
+                <label className="checkbox-label">
+                    Confronta
+                    <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => onToggle(device.id)}
+                        className="device-checkbox"
+                    />
+                </label>
 
-            {/* Checkbox per comparazione */}
-            <input
-                type="checkbox"
-                checked={isSelected}
-                onChange={() => onToggle(device.id)}
-            />
 
-            {/* Bottone preferiti */}
-            <button onClick={() => toggleFavorites(device)}>
-                {isFavorite(device) ? <FaStar /> : <FaRegStar />}
-            </button>
+                {/* Bottone preferiti */}
+                <button onClick={() => toggleFavorites(device)} className="favorite-button">
+                    {isFavorite(device) ? <FaStar /> : <FaRegStar />}
+                </button>
+            </div>
         </>
     )
 });

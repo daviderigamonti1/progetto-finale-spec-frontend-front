@@ -24,8 +24,6 @@ export default function AddDevice() {
         return "";
     }, [deviceTitle]);
 
-    //Il problema è che non posso lasciare vuoto nessun campo input
-
     async function handleSubmit(e) {
         e.preventDefault();
 
@@ -65,7 +63,7 @@ export default function AddDevice() {
     }
 
     return (
-        <div>
+        <div className="add-device-container">
             <h2>Aggiungi un dispositivo</h2>
             <form onSubmit={handleSubmit}>
                 <label>

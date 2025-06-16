@@ -69,16 +69,18 @@ export default function DeviceList() {
                 </select>
 
                 {/* Ordina dispositivi (A-Z / Z-A) */}
-                <button onClick={toggleOrder}>
+                <button onClick={toggleOrder} className="sort-button">
                     {sortOrder === "asc" ? "A-Z" : "Z-A"}
                 </button>
 
-                {/* Lista Dispositivi */}
+                {/* Bottone confronta */}
                 {selectedDevicesIds.length >= 2 && (
-                    <Link to={`/devices/compare/${selectedDevicesIds.join(",")}`}>
+                    <Link to={`/devices/compare/${selectedDevicesIds.join(",")}`} className="compare-button">
                         Confronta
                     </Link>
                 )}
+
+                {/* Lista Dispositivi */}
                 {filteredAndSorteredDevice.length > 0 ? (
                     <ul>
                         {filteredAndSorteredDevice.map((device) => (
