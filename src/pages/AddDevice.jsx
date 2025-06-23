@@ -51,6 +51,7 @@ export default function AddDevice() {
             await addDevice(newDevice);
             alert("Dispositivo creato con successo.");
             setDeviceTitle("");
+            categoryRef.current.value = "";
             brandRef.current.value = "";
             modelRef.current.value = "";
             releaseRef.current.value = "";

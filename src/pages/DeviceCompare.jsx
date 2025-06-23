@@ -5,11 +5,18 @@ const { VITE_API_URL } = import.meta.env;
 
 export default function DeviceCompare() {
     const { ids } = useParams();
-    const idsArray = ids?.split(",") || [];
 
     const [devicesCompared, setDevicesCompared] = useState(null);
 
+    async function fetchJson(url) {
+        const response = await fetch(url);
+        const obj = await response.json();
+        return obj;
+    }
+
     useEffect(() => {
+        const idsArray = ids?.split(",") || [];
+
         if (idsArray.length < 2) {
             setDevicesCompared(null);
             return;
@@ -17,10 +24,9 @@ export default function DeviceCompare() {
 
         const fetchDetails = async () => {
             try {
-                const promises = idsArray.map(id => fetch(`${VITE_API_URL}/devices/${id}`));
-                const responses = await Promise.all(promises);
-                const data = await Promise.all(responses.map(res => res.json()));
-                setDevicesCompared(data.map(d => d.device));
+                const promises = idsArray.map(id => fetchJson(`${VITE_API_URL}/devices/${id}`));
+                const results = await Promise.all(promises);
+                setDevicesCompared(results.map(d => d.device));
             } catch (err) {
                 console.error("Errore nel recupero dei dettagli dei dispositivi:", err);
             }

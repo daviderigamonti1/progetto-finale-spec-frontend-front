@@ -7,7 +7,7 @@ const saved = localStorage.getItem("favorites");
 
 export function GlobalProvider({ children }) {
     const { devices, addDevice, removeDevice } = useDevices();
-    const [favorites, setFavorites] = useState(saved ? JSON.parse(localStorage.getItem("favorites")) : []);
+    const [favorites, setFavorites] = useState(saved ? JSON.parse(saved) : []);
 
     const uniqueCategories = useMemo(() => {
         return devices.reduce((acc, device) => {
@@ -24,7 +24,7 @@ export function GlobalProvider({ children }) {
         let updatedFavorites;
 
         if (isFavorite(device)) {
-            updatedFavorites = [...favorites].filter(fav => fav.id !== device.id);
+            updatedFavorites = favorites.filter(fav => fav.id !== device.id);
         } else {
             updatedFavorites = [...favorites, device];
         }
@@ -34,7 +34,7 @@ export function GlobalProvider({ children }) {
     }
 
     return (
-        <GlobalContext.Provider value={{ devices, addDevice, removeDevice, uniqueCategories, favorites, toggleFavorites, isFavorite }}>
+        <GlobalContext.Provider value={{ devices, addDevice, removeDevice, uniqueCategories, favorites, setFavorites, toggleFavorites, isFavorite }}>
             {children}
         </GlobalContext.Provider>
     )

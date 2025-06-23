@@ -39,7 +39,7 @@ export default function DeviceList() {
         setSortOrder(prev => prev === "asc" ? "desc" : "asc");
     }
 
-    function toggleSelection(deviceId) {
+    const toggleSelection = useCallback((deviceId) => {
         setSelectedDevicesIds(prev => {
             if (prev.includes(deviceId)) {
                 return prev.filter(id => id !== deviceId);
@@ -47,7 +47,7 @@ export default function DeviceList() {
                 return [...prev, deviceId];
             }
         });
-    }
+    }, []);
 
     return (
         <>

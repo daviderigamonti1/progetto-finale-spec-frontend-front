@@ -16,6 +16,7 @@ export default React.memo(function Device({ device, isSelected, onToggle }) {
                 <span className="device-category">{device.category}</span>
             </div>
             <div className="device-controls">
+
                 {/* Checkbox per comparazione */}
                 <label className="checkbox-label">
                     Confronta
@@ -26,7 +27,6 @@ export default React.memo(function Device({ device, isSelected, onToggle }) {
                         className="device-checkbox"
                     />
                 </label>
-
 
                 {/* Bottone preferiti */}
                 <button onClick={() => toggleFavorites(device)} className="favorite-button">

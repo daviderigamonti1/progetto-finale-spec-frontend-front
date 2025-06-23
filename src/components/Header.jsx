@@ -13,8 +13,8 @@ export default function Header() {
                 <NavLink to={"/add"} className="nav-link">Aggiungi Dispositivo</NavLink>
             </nav>
 
+            {/* Dispositivi preferiti */}
             <div className="favorites-toggle">
-                {/* Dispositivi preferiti */}
                 <button className="toggle-button" onClick={() => setShowFavorites(prev => !prev)}>
                     {showFavorites ? "Nascondi preferiti" : "Mostra preferiti"}
                 </button>

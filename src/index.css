@@ -60,7 +60,6 @@ header {
     background-color: #0056b3;
 }
 
-/* Dropdown preferiti */
 .favorites-list {
     position: absolute;
     top: 40px;
@@ -113,7 +112,6 @@ header {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Input testo e Select categoria */
 .device-list-container input[type="text"],
 .device-list-container select {
     width: 100%;
@@ -317,7 +315,6 @@ header {
     border-color: #007bff;
 }
 
-/* Errori */
 .add-device-container p {
     color: #d9534f;
     font-size: 14px;
@@ -410,7 +407,7 @@ p {
 /* --------------------------------------------------------
    CONTENITORE PRINCIPALE DETTAGLIO DISPOSITIVO
 -------------------------------------------------------- */
-.device-list-container {
+.device-detail-container {
     max-width: 600px;
     margin: 40px auto;
     padding: 25px 30px;
@@ -421,7 +418,7 @@ p {
     color: #333;
 }
 
-.device-list-container h1 {
+.device-detail-container h1 {
     font-size: 28px;
     margin-bottom: 30px;
     color: #007bff;
@@ -480,7 +477,7 @@ p {
     color: #0056b3;
 }
 
-.device-list-container>button {
+.delete-button {
     width: 100%;
     padding: 12px 0;
     background-color: #dc3545;
@@ -494,7 +491,7 @@ p {
     margin-top: 10px;
 }
 
-.device-list-container>button:hover {
+.delete-button:hover {
     background-color: #b02a37;
 }
 

@@ -10,21 +10,32 @@ export default function DeviceDetail() {
     const { id } = useParams();
     const [deviceDetails, setDeviceDetails] = useState(null);
 
-    const { toggleFavorites, isFavorite, removeDevice } = useContext(GlobalContext);
+    const { toggleFavorites, favorites, setFavorites, isFavorite, removeDevice } = useContext(GlobalContext);
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`${VITE_API_URL}/devices/${id}`)
-            .then(res => res.json())
-            .then(data => setDeviceDetails(data.device))
-            .catch(err => console.error(err))
+        const fetchDetails = async () => {
+            try {
+                const res = await fetch(`${VITE_API_URL}/devices/${id}`);
+                const data = await res.json();
+                setDeviceDetails(data.device);
+            } catch (err) {
+                console.error("Errore nel recupero del dispositivo:", err)
+            }
+        }
+        fetchDetails();
     }, [id]);
 
     const handleDelete = async () => {
         try {
             await removeDevice(deviceDetails.id);
-            alert("Dispositivo eliminato con succeso.");
+            alert("Dispositivo eliminato con successo.");
+
+            const updatedFavorites = favorites.filter(fav => fav.id !== deviceDetails.id);
+            setFavorites(updatedFavorites);
+            localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+
             navigate("/");
         } catch (err) {
             console.error(err);
@@ -35,7 +46,7 @@ export default function DeviceDetail() {
 
     return (
         <>
-            <div className="device-list-container">
+            <div className="device-detail-container">
                 <h1>Dettaglio Dispositivo</h1>
                 <div className="device-detail-card card">
                     <h3>{deviceDetails.title}</h3>
@@ -49,7 +60,7 @@ export default function DeviceDetail() {
                     </button>
                 </div>
                 <Link to="/" className="back-link">← Torna indietro</Link>
-                <button onClick={handleDelete}>
+                <button onClick={handleDelete} className='delete-button'>
                     Elimina Dispositivo
                 </button>
             </div>
